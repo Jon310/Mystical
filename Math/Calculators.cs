@@ -16,18 +16,37 @@ using Vector3 = Buddy.Auth.Math.Vector3;
 
 namespace Mystical.Math
 {
-    class Calculators
+    internal class Calculators
     {
         private static readonly LocalPlayer Me = StyxWoW.Me;
 
         #region Rotation
 
         // Rotation
-        public static readonly float _rotation = Me.RotationDegrees;
-        public static float _rot = Me.Rotation;
-        public static double _radians = _rotation * (System.Math.PI / 180);
-        public static double _theta = System.Math.Atan(_relY / _relX); // Radians
-        public static double _thetadeg = RadtoDeg(_theta);
+        public static float _rotation(WoWObject obj)
+        {
+            return obj.RotationDegrees;
+        }
+
+        public static float _rot(WoWObject obj)
+        {
+            return Me.Rotation;
+        }
+
+        public static double _radians(WoWObject obj)
+        {
+            return _rotation(obj)*(System.Math.PI/180);
+        }
+
+        public static double _theta(WoWObject obj)
+        {
+            return System.Math.Atan(_Y(obj)/_X(obj)); // Radians
+        }
+
+        public static double _thetadeg(WoWObject obj)
+        {
+            return RadtoDeg(_theta(obj));
+        }
 
         #endregion
 
@@ -36,38 +55,95 @@ namespace Mystical.Math
         //////////////////
         //// Position ////
         //////////////////
-        
+
         // Cartesian
-        public static double _tarX = Me.CurrentTarget.X;
-        public static double _tarY = Me.CurrentTarget.Y;
-        public static float _tarZ = Me.CurrentTarget.Z;
+        public static double _X(WoWObject obj) 
+        {
+            return obj.X;
+        }
 
-        public static float _meX = Me.X;
-        public static float _meY = Me.Y;
-        public static float _meZ = Me.Z;
+        public static double _Y(WoWObject obj)
+        {
+            return obj.Y;
+        }
 
-        // Relative xyz (Coord system centered on player at (0,0,0))
-        public static float _relX = Me.CurrentTarget.X - Me.X;
-        public static float _relY = Me.CurrentTarget.Y - Me.Y;
-        public static float _relZ = Me.CurrentTarget.Z - Me.Z;
+        public static float _Z(WoWObject obj)
+        {
+            return obj.Z;
+        }
+
+        /// <summary>
+        /// Relative X. (coordinate system centered on obj1 at (0,0,0)
+        /// </summary>
+        /// <param name="obj1">The obj1.</param>
+        /// <param name="obj2">The obj2.</param>
+        /// <returns>obj2 - obj1</returns>
+        public static float _relX(WoWObject obj1, WoWObject obj2)
+        {
+            return obj2.X - obj1.X;
+        }
+        
+        /// <summary>
+        /// Relative Y. (coordinate system centered on obj1 at (0,0,0)
+        /// </summary>
+        /// <param name="obj1">The obj1.</param>
+        /// <param name="obj2">The obj2.</param>
+        /// <returns>obj2 - obj1</returns>
+        public static float _relY(WoWObject obj1, WoWObject obj2)
+        {
+            return obj2.Y - obj1.Y;
+        }
+
+        /// <summary>
+        /// Relative Z. (coordinate system centered on obj1 at (0,0,0)
+        /// </summary>
+        /// <param name="obj1">The obj1.</param>
+        /// <param name="obj2">The obj2.</param>
+        /// <returns>obj2 - obj1</returns>
+        public static float _relZ(WoWObject obj1, WoWObject obj2)
+        {
+            return obj2.Z - obj1.Z;
+        }
 
         // Polar (R, theta, Z)
-        public static double _tarR = System.Math.Sqrt(System.Math.Pow(_tarX, 2) + System.Math.Pow(_tarY, 2)); // (x^2 + Y^2)^(1/2)
+        public static double _R(WoWObject obj1, WoWObject obj2)
+        {
+            return System.Math.Sqrt(System.Math.Pow(_relX(obj1, obj2), 2) + System.Math.Pow(_relY(obj1, obj2), 2)); // (x^2 + Y^2)^(1/2)
+        }
         // theta and Z are the same as Rotation and Cartesian
-
-
-        // Cylendrical (p, fi, theta)
 
         #endregion
 
-        #region Vectors
+        #region Vectors        
 
-        public static Vector3 _metoTar = new Vector3(_relX, _relY, _relZ);
-        public static Vector3 _tartoMe = -_metoTar;
+        /// <summary>
+        /// The Vector from obj1 to obj2
+        /// </summary>
+        /// <param name="obj1">The obj1.</param>
+        /// <param name="obj2">The obj2.</param>
+        /// <returns>A Vector <x, y, z></returns>
+        public static Vector3 _obj1ToObj2(WoWObject obj1, WoWObject obj2)
+        {
+            return new Vector3(_relX(obj1, obj2), _relY(obj1, obj2), _relZ(obj1, obj2));
+        }
 
-        // Unit Vectors
-        public static Vector3 _unitMetoTar = _metoTar / _metoTar.Magnitude;
-        
+        /// <summary>
+        /// Unit Vector obj1 towards obj2 with a length of 1 unit.
+        /// </summary>
+        /// <param name="obj1">The obj1.</param>
+        /// <param name="obj2">The obj2.</param>
+        /// <returns>A Vector of length 1 unit</returns>
+        public static Vector3 _unitVector(WoWObject obj1, WoWObject obj2)
+        {
+            return _obj1ToObj2(obj1, obj2) / _obj1ToObj2(obj1, obj2).Magnitude;
+        }
+
+        public static Vector3 _B(Vector3 targetVector3)
+        {
+            return 
+        }
+
+
         #endregion
 
         #region Conversions

@@ -6,8 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Mystical.Helpers;
+using Mystical.Math;
 using Styx;
 using Styx.CommonBot;
+using Styx.CommonBot.Coroutines;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 
@@ -49,6 +51,19 @@ namespace Mystical.Movement
             {
                 WoWMovement.Move(WoWMovement.MovementDirection.Backwards);
                 SpellManager.Cast("Blink");
+                await CommonCoroutines.SleepForLagDuration();
+                return false;
+            }
+
+            if (Me.CurrentTarget.Distance < 10)
+            {
+                WoWPoint point = new WoWPoint(Calculators._relX(Me, Me.CurrentTarget));
+
+                while (Me.IsFacing(point))
+                {
+                    
+                }
+                WoWMovement.Move(WoWMovement.MovementDirection.TurnLeft);
             }
 
             return false;
