@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using Styx;
 using Styx.Common;
 using Styx.CommonBot;
@@ -138,9 +139,14 @@ namespace Mystical.Math
             return _obj1ToObj2(obj1, obj2) / _obj1ToObj2(obj1, obj2).Magnitude;
         }
 
-        public static Vector3 _B(Vector3 targetVector3)
+        public static Vector3 _B(Vector3 targetVector3, double theta)
         {
-            return 
+            
+            var Xcoord = (System.Math.Cos(theta) * targetVector3.X) - (System.Math.Sin(theta) * targetVector3.X);
+            var Ycoord = (System.Math.Sin(theta) * targetVector3.Y) + (System.Math.Cos(theta) * targetVector3.Y);
+
+
+            return new Vector3((float) Xcoord, (float) Ycoord, Me.Z);
         }
 
 
