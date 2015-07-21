@@ -135,6 +135,32 @@ namespace Mystical.Movement
             }
         }
 
+        private static bool backingup = false;
+
+
+        // Glyphed Blinking Testing (Backwards Blink) NEEDS SIDE BLINK  TOO
+        public static async Task<bool> BlinkBackwards()
+        {
+            
+            if (!Me.MovementInfo.MovingBackward)
+            {
+                backingup = true;   
+                WoWMovement.Move(WoWMovement.MovementDirection.Backwards);
+            }
+
+            if (Me.MovementInfo.MovingBackward)
+            {
+                await Spell.CoCast(SpellList.Blink);
+
+                if (SpellManager.Spells["Blink"].Cooldown && Me.MovementInfo.MovingBackward)
+                {
+                    WoWMovement.MoveStop(WoWMovement.MovementDirection.Backwards);
+                }
+            }
+
+            return false;            
+        }
+
 
     }
 }

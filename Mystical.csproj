@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GreyMagic">
-      <HintPath>..\..\..\GreyMagic.dll</HintPath>
+      <HintPath>..\..\HB\GreyMagic.dll</HintPath>
     </Reference>
     <Reference Include="Honorbuddy">
-      <HintPath>..\..\..\Honorbuddy.exe</HintPath>
+      <HintPath>..\..\HB\Honorbuddy.exe</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
